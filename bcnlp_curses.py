@@ -16,8 +16,9 @@ import curses
 from curses import panel                                                     
 import bcnlp_db
 import bcnlp_query
-from bcnlp_extract import *
 import logging
+
+from bcnlp_extract import *
 
 # Set up logging location
 logging.basicConfig(filename='/tmp/bcnlp.log', level=logging.DEBUG)
