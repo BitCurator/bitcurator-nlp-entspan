@@ -40,15 +40,19 @@ def dbinit():
     We will use the user-name and passwd as bcnlp and bcnlp.
     Note: We created this db externally using the following procedure:
     -> Connect to postgres:
-    sudo -i -u postgres  (Provide the sudo password of the user typing it)
+    #sudo -i -u postgres  (Provide the sudo password of the user typing it)
+    sudo -u postgres psql  (Provide the sudo password of the user typing it)
     -> Create a db with a user and passwd:
     psql
         postgres=#
-        postgres=# create db bcanlp_db;
+        #postgres=# create db bcanlp_db;
+        postgres=# create database bcanlp_db;
         CREATE DATABASE
-        postgres=# create user testuser with password 'testuser';
+        #postgres=# create user testuser with password 'testuser';
+        postgres=# create user bcnlp with password 'bcnlp';
         CREATE ROLE
-        postgres=# grant all privileges on database testdb to testuser;
+        #postgres=# grant all privileges on database testdb to testuser;
+        postgres=# grant ALL on DATABASE bcanlp_db to bcnlp;
         GRANT
         postgres=# \q
     -> Now log into the DB as the given user. -W prompts for a passwd.
