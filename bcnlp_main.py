@@ -17,23 +17,16 @@ import os
 import codecs
 import textract
 import subprocess
+import numpy as np
+
 from bcnlp_extract import *
 from bcnlp_db import *
-import numpy as np
+
 global num_docs
 try:
     from argparse import ArgumentParser
 except ImportError:
     raise ImportError("This script requires ArgumentParser which is in Python 2.7 or Python 3.0")
-
-def replace_suffix(filename,orig, new):
-    orig_suffix = '.' + orig
-    new_suffix = '.' + new
-    if filename.endswith(orig):
-        filename = filename[:-len(orig_suffix)] + new_suffix
-
-    return filename
-
 
 def bcnlpInsertToPosTable(table_name, ec, pos_type_list, con, meta):
     """ Looking at the words in pos_type_list (list of nouns, or prepositions
@@ -66,7 +59,7 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
     """
     #ec = BcnlpExtractEntity(infile)
     ec[doc_index] = BcnlpExtractEntity(infile)
-    print "Calling bnSaveFieInfo with index: ", doc_index
+    #print "Calling bnSaveFieInfo with index: ", doc_index
     ec[doc_index].bnSaveFileInfo(infile, doc_index)
 
     #### Bag of words
@@ -251,6 +244,7 @@ if __name__ == "__main__":
                 print "Calculating similarity for i,j ", i, j
                 doc_path, spacy_doc = bnGetSpacyDocFromIndex(j)
                 doc_name = os.path.basename(doc_path)
+                #print("Doc name for index {} is {}".format(j, doc_name))
                 sem_sim = bnExtractDocSimilarity(myspacy_doc, spacy_doc, 'word2vec')
                 cos_sim = bnExtractDocSimilarity(myspacy_doc, spacy_doc, 'cosine')
                 euc_sim = bnExtractDocSimilarity(myspacy_doc, spacy_doc, 'Eiclidian')
