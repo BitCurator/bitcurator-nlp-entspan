@@ -44,7 +44,9 @@ class ExtractFileContents:
             f = codecs.open(infile, "r", "utf-8")
             input_file_contents = f.read()
             '''
-            input_file_contents = textacy.fileio.read.read_file(infile, mode=u'rt', encoding=None)
+            #input_file_contents = textacy.fileio.read.read_file(infile, mode=u'rt', encoding=None)
+            input_file_contents = textacy.fileio.read.read_file(new_infile, mode=u'rt', encoding=None)
+            #input_file_contents = textract.process(infile)
             
         else:
             '''
@@ -60,6 +62,14 @@ class ExtractFileContents:
 # (filename) and its corresponding spacy_doc.
 fileDictList = []
 file_array = ['filename', 'spacy_doc']
+
+def replace_suffix(filename,orig, new):
+    orig_suffix = '.' + orig
+    new_suffix = '.' + new
+    if filename.endswith(orig):
+        filename = filename[:-len(orig_suffix)] + new_suffix
+
+    return filename
 
 class BcnlpExtractEntity:
     """ Using Textacy APIs, this defines methods for extracting useful information
