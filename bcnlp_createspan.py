@@ -22,6 +22,7 @@ from warnings import warn
 import matplotlib
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+import shutil
 
 try:
     from argparse import ArgumentParser
@@ -260,10 +261,24 @@ class ParseForEnts():
         print ">> Wrote span info to output file ", outfile
 
         if bg == True:
-            print ">> Generating Graphs"
+            infile_dir = os.path.dirname(infile)
+            bgpath = os.path.join(infile_dir, "bgdir")
+            print ">> Generating Graphs in the directory ", bgpath
 
+            if os.path.exists(bgpath):
+                print ">> Recreating the directory ", bgpath
+                shutil.rmtree(bgpath)
+
+            os.makedirs(bgpath)
+
+            #if not os.path.exists(directory):
+              #os.makedirs(directory)
             # First the entity graph
+            '''
             bn_generate_bar_graph(dict_ent, infile, \
+                          "Entity Types for document " + infile, -1)
+            '''
+            bn_generate_bar_graph(dict_ent, infile, bgpath, \
                           "Entity Types for document " + infile, -1)
 
             # Now generate one histogram for each entity. There will be
@@ -275,7 +290,7 @@ class ParseForEnts():
                 dict_name, entdict = get_dict(ent_type)
                 if dict_name != None:
                     bn_generate_bar_graph(entdict, \
-                      dict_name+".pdf", \
+                      dict_name+".pdf", bgpath, \
                       "Entity : "+dict_name+' ; Document '+infile, 10 )
 
 
@@ -296,7 +311,7 @@ class ParseForEnts():
                       files in %s", f_path)
                 self.bnCleanSpanFiles(f_path)
 
-def bn_generate_bar_graph(dict_ent, filename, title, max_items):
+def bn_generate_bar_graph(dict_ent, filename, bgpath, title, max_items):
     logging.debug("generate_bar_graph: filename:%s, title: %s ", filename, title)
     fig = Figure()
     canvas = FigureCanvas(fig)
@@ -354,8 +369,9 @@ def bn_generate_bar_graph(dict_ent, filename, title, max_items):
     fig.autofmt_xdate()
 
     #pp = PdfPages(outfile)
-    file_name, file_ext = os.path.splitext(filename)
-    out_file = file_name + 'bg.pdf'
+    basename = os.path.basename(filename)
+    base_name, file_ext = os.path.splitext(basename)
+    out_file = bgpath + '/' + base_name + 'bg.pdf'
     canvas.print_figure(out_file)
     print ">> Graph is in file ", out_file
 
