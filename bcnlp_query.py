@@ -56,7 +56,7 @@ def bnGetInfoForDoc(doc_index, category, con, meta):
                         records = bnPrintTable(vp_table, con, meta)
                         outfile = vp_table+".txt"
                     elif category == 'PP':
-                        pp_table = "bcnlp_verb_doc"+str(doc_index)
+                        pp_table = "bcnlp_prepo_doc"+str(doc_index)
                         records = bnPrintTable(pp_table, con, meta)
                         outfile = pp_table+".txt"
                     elif category == 'sim':
