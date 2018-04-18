@@ -9,17 +9,10 @@ Preliminary code samples for entity extraction and span identification. Build in
 
 ## Documentation
 
-The latest documentation can be found on the BitCurator NLP wiki page at https://github.com/bitcurator/bitcurator-nlp/wiki.
+General BitCurator NLP project documentation can be found on the BitCurator NLP wiki page at https://github.com/bitcurator/bitcurator-nlp/wiki.
 
-## License(s)
 
-The BitCurator logo, BitCurator project documentation, and other non-software products of the BitCurator team are subject to the the Creative Commons Attribution 4.0 Generic license (CC By 4.0).
-
-Unless otherwise indicated, software items in this repository are distributed under the terms of the GNU General Public License, Version 3. See the text file "COPYING" for further details about the terms of this license.
-
-In addition to software produced by the BitCurator team, BitCurator packages and modifies open source software produced by other developers. Licenses and attributions are retained here where applicable.
-
-# Steps to install and run Entspan scripts.
+## Installing and running the entity extraction and analysis tools.
 
 ## Create Conda virtual environment
 - Install Conda from
@@ -51,7 +44,7 @@ conda install sqlalchemy
 conda install sqlalchemy_utils  
 conda install configobj  
 
-- Create the DB  
+## Create and populate the database  
 
 Name of the DB: "bcanlp_db"  
 To create a db with a user and password:  
@@ -99,11 +92,11 @@ psql -h localhost -U bcnlp bcanlp_db
     To delete a table: drop table <table_name>  
     To see items in a table: select * from <table_name>  
     
-- Run the curses interface and navigate through the menu:  
+## Run the curses interface and navigate through the menu:  
 
 python bcnlp_curses.py  
 
-- Run createspan to create the entity spans: 
+## Run createspan to create the entity spans: 
 
 python bcnlp_cretespan.py [--bg] --infile <directory>   
 ex: python bcnlp_cretespan.py --infile indir  
@@ -112,3 +105,10 @@ ex: python bcnlp_cretespan.py --infile indir
 It will create a file <file>.span for each file in indir.  
     If --bg flag is specified, it will generate a set of bar graphs in the directory bgdir.  
 
+## License(s)
+
+The BitCurator logo, BitCurator project documentation, and other non-software products of the BitCurator team are subject to the the Creative Commons Attribution 4.0 Generic license (CC By 4.0).
+
+Unless otherwise indicated, software items in this repository are distributed under the terms of the GNU General Public License, Version 3. See the text file "COPYING" for further details about the terms of this license.
+
+In addition to software produced by the BitCurator team, BitCurator packages and modifies open source software produced by other developers. Licenses and attributions are retained here where applicable.
