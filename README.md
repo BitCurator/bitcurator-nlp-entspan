@@ -1,4 +1,9 @@
+![Logo](https://wiki.bitcurator.net/downloads/BitCurator-400px.png)
+
 # bitcurator-nlp-entspan
+
+[![GitHub issues](https://img.shields.io/github/issues/bitcurator/bitcurator-nlp.svg)](https://github.com/bitcurator/bitcurator-nlp/issues)
+[![GitHub forks](https://img.shields.io/github/forks/bitcurator/bitcurator-nlp.svg)](https://github.com/bitcurator/bitcurator-nlp/network)
 
 Preliminary code samples for entity extraction and span identification. Build instructions and dependencies can be found in BUILD-NOTES.md. This project is in development.
 
