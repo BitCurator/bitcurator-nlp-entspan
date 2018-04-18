@@ -44,7 +44,7 @@ conda install sqlalchemy
 conda install sqlalchemy_utils  
 conda install configobj  
 
-## Create and populate the database  
+### Create and populate the database  
 
 Name of the DB: "bcanlp_db"  
 To create a db with a user and password:  
@@ -92,11 +92,11 @@ psql -h localhost -U bcnlp bcanlp_db
     To delete a table: drop table <table_name>  
     To see items in a table: select * from <table_name>  
     
-## Run the curses interface and navigate through the menu:  
+### Run the curses interface and navigate through the menu:  
 
 python bcnlp_curses.py  
 
-## Run createspan to create the entity spans: 
+### Run createspan to create the entity spans: 
 
 python bcnlp_cretespan.py [--bg] --infile <directory>   
 ex: python bcnlp_cretespan.py --infile indir  
