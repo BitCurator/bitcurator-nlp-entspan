@@ -14,7 +14,7 @@ General BitCurator NLP project documentation can be found on the BitCurator NLP 
 
 ## Installing and running the entity extraction and analysis tools.
 
-## Create Conda virtual environment
+### Create Conda virtual environment
 - Install Conda from
 https://www.anaconda.com/download/#linux
 
