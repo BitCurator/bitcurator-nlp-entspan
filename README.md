@@ -9,7 +9,7 @@ Preliminary code samples for entity extraction and span identification. Build in
 
 ## Documentation
 
-The latest documentation can be found on the BitCurator Access wiki page at https://wiki.bitcurator.net/index.php?title=BitCurator_NLP.
+The latest documentation can be found on the BitCurator NLP wiki page at https://github.com/bitcurator/bitcurator-nlp/wiki.
 
 ## License(s)
 
@@ -21,8 +21,8 @@ In addition to software produced by the BitCurator team, BitCurator packages and
 
 # Steps to install and run Entspan scripts.
 
-#Create Conda virtual environment
-- Install Conga from
+## Create Conda virtual environment
+- Install Conda from
 https://www.anaconda.com/download/#linux
 
 (Conda cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf)
