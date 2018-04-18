@@ -18,7 +18,7 @@ General BitCurator NLP project documentation can be found on the BitCurator NLP 
 - Install Conda from
 https://www.anaconda.com/download/#linux
 
-(Conda cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf)
+You can find a helpful overview of common Conda commands on the cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf.
 
 - Install conda-forge channel (It has most of the packages we need)  
 ```shell
