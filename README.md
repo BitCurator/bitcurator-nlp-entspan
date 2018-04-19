@@ -9,7 +9,7 @@ Entity extraction and span identification for heterogeneous document types. Buil
 
 ## Installing and running the entity extraction and analysis tools.
 
-### Create Conda virtual environment
+### Install Conda
 - Install Conda from
 https://www.anaconda.com/download/#linux
 
@@ -29,7 +29,7 @@ Type "yes" and hit enter to accept the license, then scroll through the text and
 You can find a helpful overview of common Conda commands on the cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf.
 
 
-- Create Conda virtual environment:
+### Create a new Python virtualenv using Conda:
 ```shell
 #conda create --name < envname > python=2.7  
 conda create --name entspan python=2.7  
