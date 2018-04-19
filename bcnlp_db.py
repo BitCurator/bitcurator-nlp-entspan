@@ -35,7 +35,7 @@ def dbinit():
     #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
 
     """
-    db_connect connects to the database 'bcanlp_db' and returns
+    db_connect connects to the database 'bcnlp_db' and returns
     a connection object and a metadata object
     We will use the user-name and passwd as bcnlp and bcnlp.
     Note: We created this db externally using the following procedure:
@@ -45,21 +45,21 @@ def dbinit():
     -> Create a db with a user and passwd:
     psql
         postgres=#
-        #postgres=# create db bcanlp_db;
-        postgres=# create database bcanlp_db;
+        #postgres=# create db bcnlp_db;
+        postgres=# create database bcnlp_db;
         CREATE DATABASE
         #postgres=# create user testuser with password 'testuser';
         postgres=# create user bcnlp with password 'bcnlp';
         CREATE ROLE
         #postgres=# grant all privileges on database testdb to testuser;
-        postgres=# grant ALL on DATABASE bcanlp_db to bcnlp;
+        postgres=# grant ALL on DATABASE bcnlp_db to bcnlp;
         GRANT
         postgres=# \q
     -> Now log into the DB as the given user. -W prompts for a passwd.
-       $ psql -h localhost -d bcanlp_db -U bcnlp -W
+       $ psql -h localhost -d bcnlp_db -U bcnlp -W
        Password  (bcnlp)
     """
-    con, meta = db_connect('bcnlp', 'bcnlp', 'bcanlp_db')
+    con, meta = db_connect('bcnlp', 'bcnlp', 'bcnlp_db')
 
     print("[LOG]: dbinit: Tables created")
     print "[LOG]:dbinit: con: ", con
@@ -70,7 +70,7 @@ def dbinit():
 
     # Create a list of dictionaries to return the con and meta values for
     # the given db
-    bndbAddToDbList('bcanlp_db', con, meta)
+    bndbAddToDbList('bcnlp_db', con, meta)
 
     return con, meta
 
@@ -204,7 +204,7 @@ def dbu_get_conn():
         the database.
     """
     conn = psycopg2.connect("\
-        dbname='bcanlp_db'\
+        dbname='bcnlp_db'\
         user='bcnlp'\
         host = '127.0.0.1' \
         password='bcnlp'\
@@ -289,7 +289,7 @@ def dbu_execute_dbcmd(function, **kwargs):
         for k,v in kwargs.iteritems():
             #print "k-%s = v-%s" % (k, v)
             i += 1
-            con, meta = db_connect('bcnlp', 'bcnlp', 'bcanlp_db')
+            con, meta = db_connect('bcnlp', 'bcnlp', 'bcnlp_db')
             doc_index = bnGetDocIndexForDoc(con, meta, v)
             #tablename = table+str(i)
             new_table_name += str(doc_index)

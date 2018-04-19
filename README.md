@@ -68,12 +68,12 @@ conda install configobj
 
 ### Create and populate the database  
 
-Note: If the DB "bcanlp_db" already exists and you want to start afresh, 
+Note: If the DB "bcnlp_db" already exists and you want to start afresh, 
 first delete it. 
 
 ```shell
-# drop the db named: "bcanlp_db"  
-sudo -u postgres dropdb bcanlp_db
+# drop the db named: "bcnlp_db"  
+sudo -u postgres dropdb bcnlp_db
 ```
 
 To create a db with a user and password:
@@ -81,18 +81,18 @@ To create a db with a user and password:
 ```shell
 sudo -u postgres psql  
 postgres=#  
-postgres=# create database bcanlp_db;  
+postgres=# create database bcnlp_db;  
 CREATE DATABASE  
 postgres=# create user bcnlp with password 'bcnlp';  
 CREATE ROLE   
-postgres=# grant all privileges on database bcanlp_db to bcnlp;  
+postgres=# grant all privileges on database bcnlp_db to bcnlp;  
 GRANT  
 postgres=# \q  
 ```
 
 - Login to the db using psql:   
 ```shell
-psql -h localhost -U bcnlp bcanlp_db  
+psql -h localhost -U bcnlp bcnlp_db  
 (passwd: bcnlp)
 ```
 To list tables: \dt
@@ -122,7 +122,7 @@ python -m spacy.en.download all
 - Check if the DB is populated  
 
 ```shell
-psql -h localhost -U bcnlp bcanlp_db  
+psql -h localhost -U bcnlp bcnlp_db  
 ```
 Note: the password in this case is "bcnlp" 
 
