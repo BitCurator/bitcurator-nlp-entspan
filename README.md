@@ -35,7 +35,7 @@ You can find a helpful overview of common Conda commands on the cheatsheet: http
 conda create --name entspan python=2.7  
 ```
 
-Type "y" and hit enter to proceed when prompted.
+Type "y" and hit enter to proceed if prompted.
 
 - List the virtual envs created:  
 ```shell
@@ -45,6 +45,8 @@ conda info --envs
 ```shell
 conda install --channel conda-forge  python=2.7
 ```
+
+Type "y" and hit enter to proceed if prompted.
 
 ### Activate the Python virtualenv we'll be using:  
 ```shell
