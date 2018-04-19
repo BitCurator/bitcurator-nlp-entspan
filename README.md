@@ -71,9 +71,10 @@ conda install configobj
 Note: If the DB "bcanlp_db" already exists and you want to start afresh, 
 first delete it. 
 
-Name of the DB: "bcanlp_db"  
-
+```shell
+# drop the db named: "bcanlp_db"  
 sudo -u postgres dropdb bcanlp_db
+```
 
 To create a db with a user and password:
 
