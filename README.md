@@ -29,11 +29,13 @@ Type "yes" and hit enter to accept the license, then scroll through the text and
 You can find a helpful overview of common Conda commands on the cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf.
 
 
-### Create a new Python virtualenv using Conda:
+### Create a new Python virtualenv using Conda and install necessary channels:
 ```shell
 #conda create --name < envname > python=2.7  
 conda create --name entspan python=2.7  
 ```
+
+Type "y" and hit enter to proceed when prompted.
 
 - List the virtual envs created:  
 ```shell
@@ -43,13 +45,14 @@ conda info --envs
 ```shell
 conda install --channel conda-forge  python=2.7
 ```
-- To get into conda virtual environment, do:  
+
+### Activate the Python virtualenv we'll be using:  
 ```shell
 #source activate < name >  
 source activate entspan  
 ```
 
-- Install the required packages:    
+### Install the required packages:    
 
 ```shell
 conda install spacy  
