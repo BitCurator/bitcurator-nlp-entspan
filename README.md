@@ -121,12 +121,17 @@ python -m spacy.en.download all
     
 - Check if the DB is populated  
 
+```shell
 psql -h localhost -U bcnlp bcanlp_db  
-(passwd: bcnlp)  
-    Some useful commands:  
-    To list tables: \dt  
-    To delete a table: drop table <table_name>  
-    To see items in a table: select * from <table_name>  
+```
+Note: the password in this case is "bcnlp" 
+
+Some useful commands:  
+```shell
+To list tables: \dt  
+To delete a table: drop table <table_name>  
+To see items in a table: select * from <table_name>  
+```    
     
 ### Run the curses interface and navigate through the menu:  
 
