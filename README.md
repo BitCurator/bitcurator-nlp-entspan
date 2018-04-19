@@ -24,7 +24,7 @@ curl -O https://repo.continuum.io/archive/Anaconda2-5.1.0-Linux-x86_64.sh
 bash Anaconda2-5.1.0-Linux-x86_64.sh
 ```
 
-Type "yes" and hit enter to accept the license, then scroll through the text and hit enter to install into your home directory.
+Type "yes" and hit enter to accept the license, then scroll through the text and hit enter to install into your home directory. Wait for the packages to install, then type "yes" at the next prompt to add the Conda location to your path and hit enter. Type "no" to skip VSTools, and hit enter.
 
 You can find a helpful overview of common Conda commands on the cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf.
 
