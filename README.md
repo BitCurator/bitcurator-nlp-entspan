@@ -28,6 +28,14 @@ Type "yes" and hit enter to accept the license, then scroll through the text and
 
 You can find a helpful overview of common Conda commands on the cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf.
 
+### Install postgres
+
+You will need the postgres database to store entity and span data produced by the tool. Run the following commands to install postgres:
+
+```shell
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+```
 
 ### Create a new Python virtualenv using Conda and install necessary channels:
 ```shell
