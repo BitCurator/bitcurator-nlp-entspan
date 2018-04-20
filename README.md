@@ -80,7 +80,6 @@ To create a db with a user and password:
 
 ```shell
 sudo -u postgres psql  
-postgres=#  
 postgres=# create database bcnlp_db;  
 CREATE DATABASE  
 postgres=# create user bcnlp with password 'bcnlp';  
@@ -101,6 +100,17 @@ To list tables: \dt
 
 Store the files to be processed in a directory, say, "indir"  
 
+### Download the spaCy English language model:
+
+```shell
+python -m spacy download en 
+```
+- Note:  
+
+If the language modle is not downloaded properly, you will see the following Spacy error:  
+"Warning: no model found for 'en' Only loading the 'en' tokenizer."
+when running bcnlp_main.py.
+
 ### Populating the DB with tables of entities, POS, etc.  
 
 Run the Python script bcnlp_main.py:  
@@ -109,16 +119,7 @@ Run the Python script bcnlp_main.py:
 python bcnlp_main.py --infile < inputfile >   
 ex: python bcnlp_main.py --infile indir   
 ```    
-    
-- Note:  
 
-When you run bcnlp_main.py, if you see the following Spacy error:  
-"Warning: no model found for 'en' Only loading the 'en' tokenizer."  
-run the following command in your env:  
-```shell
-python -m spacy download en 
-```
-    
 - Check if the DB is populated  
 
 ```shell
