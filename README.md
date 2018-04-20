@@ -116,7 +116,7 @@ When you run bcnlp_main.py, if you see the following Spacy error:
 "Warning: no model found for 'en' Only loading the 'en' tokenizer."  
 run the following command in your env:  
 ```shell
-python -m spacy.en.download all 
+python -m spacy download en 
 ```
     
 - Check if the DB is populated  
