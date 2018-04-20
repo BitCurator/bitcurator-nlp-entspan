@@ -13,7 +13,7 @@ Entity extraction and span identification for heterogeneous document types. Buil
 - Install Conda from
 https://www.anaconda.com/download/#linux
 
-To install conda from the command line in Ubuntu, run the following commands (we'll use Release 5.1.0 as an example here):
+To install conda from the command line in Ubuntu, run the following commands (we'll use Release 5.1.0 as an example here) in a terminal:
 
 ```shell
 # First install curl
