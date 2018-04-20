@@ -160,6 +160,24 @@ ex: python bcnlp_cretespan.py --infile indir
 - If --bg flag is specified, it will generate a set of bar graphs in the directory 
 bgdir.  
 
+## Deactivating your conda environment
+
+To deactivate the conda environment you're working in, simply type:
+
+```shell
+source deactivate entspan
+```
+
+You can reactivate your conda environment by running the activate command again from any terminal.
+
+## Permanently deleting a conda environment
+
+To permanently remove the "entspan" conda environment and all dependencies (not including the Postgres database), run the following:
+
+```shell
+conda remove --name entspan --all
+```
+
 ## License(s)
 
 The BitCurator logo, BitCurator project documentation, and other non-software products of the BitCurator team are subject to the the Creative Commons Attribution 4.0 Generic license (CC By 4.0).
