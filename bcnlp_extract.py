@@ -2,7 +2,7 @@
 # coding=UTF-8
 #
 # BitCurator NLP Tools
-# Copyright (C) 2016 -2017 
+# Copyright (C) 2016 -2017
 # All rights reserved.
 #
 # This code is distributed under the terms of the GNU General Public
@@ -25,40 +25,42 @@ class ExtractFileContents:
     def extractContents(self, infile):
         if not infile.endswith('.txt'):
             print("infile {} doesnt end with txt. So textracting".format(infile))
-    
+
             filename, file_ext = os.path.splitext(infile)
             print("Filename: {}, ext: {}".format(filename, file_ext))
-            
+
             new_infile = replace_suffix(infile,file_ext, 'txt')
             print "new_infile: ", new_infile
-            textract_cmd = 'textract ' + infile + ' > ' + new_infile 
+            textract_cmd = 'textract ' + infile + ' > ' + new_infile
             ## print "CMD: ", textract_cmd
-    
+
             # Fixme: subprocess is not needed. The above line where textract.process
             # works fine, but it gives UicodeDecode error. But doing sdubprocess also
             # gives the same error when f.read() is done. Need to fix this.
             # UnicodeDecodeError: 'utf8' codec can't decode byte 0xc7 in position 10: invalid continuation byte
             subprocess.check_output(textract_cmd, shell=True, stderr=subprocess.STDOUT)
-    
+
             '''
             f = codecs.open(infile, "r", "utf-8")
             input_file_contents = f.read()
             '''
             #input_file_contents = textacy.fileio.read.read_file(infile, mode=u'rt', encoding=None)
-            input_file_contents = textacy.fileio.read.read_file(new_infile, mode=u'rt', encoding=None)
+            input_file_contents = textacy.io.read_text(new_infile, mode=u'rt', lines=False,
+                                                       encoding=None).next()
             #input_file_contents = textract.process(infile)
-            
+
         else:
             '''
             f = codecs.open(infile, "r", "utf-8")
             input_file_contents = f.read()
             '''
             print "Extracting Contents of file", infile
-            input_file_contents = textacy.fileio.read.read_file(infile, mode=u'rt', encoding=None)
-            
+            input_file_contents = textacy.io.read_text(infile, mode=u'rt', lines=False,
+                                                       encoding=None).next()
+
         return input_file_contents
-    
-# fileDictList is a list of dictionaries, each dict consisting of document name 
+
+# fileDictList is a list of dictionaries, each dict consisting of document name
 # (filename) and its corresponding spacy_doc.
 fileDictList = []
 file_array = ['filename', 'spacy_doc']
@@ -75,7 +77,7 @@ class BcnlpExtractEntity:
     """ Using Textacy APIs, this defines methods for extracting useful information
         from the given files.
     """
-    
+
     def __init__(self, infile):
         efc = ExtractFileContents()
         print ("INIT: Extract contents for infile: ", infile)
@@ -91,14 +93,15 @@ class BcnlpExtractEntity:
 
     def bnGetBagOfWords(self):
         # FIXME: Keeping Lemmatize=True doesn't work. Fix it
-        bow = self.doc.to_bag_of_words(lemmatize=False, as_strings=True)
+        bow = self.doc.to_bag_of_words(normalize='lemma', as_strings=True)
         return bow
 
     def bnGetBagOfTerms(self, is_sorted, ngrams):
-        bot = self.doc.to_bag_of_terms(ngrams=ngrams, named_entities=True, lemmatize=False, as_strings=True)
+        bot = self.doc.to_bag_of_terms(ngrams=ngrams, named_entities=True, normalize='lemma',
+                                       as_strings=True)
         #term_count = self.doc.count()
         #print("BOT: term count:{}  \n\n".format(term_count))
-        
+
         if is_sorted == True:
             bot_sorted = sorted(bot.items(), key=lambda x: x[1], reverse=True)
             return bot_sorted
@@ -112,14 +115,14 @@ class BcnlpExtractEntity:
     def bnGetNGrams(self, n):
         ng = textacy.extract.ngrams(self.doc, n, filter_stops=True, filter_punct=True, filter_nums=False, include_pos=None, exclude_pos=None, min_freq=1)
         return ng
-        
+
     def bnIdentifyNamedEntities(self, ne_include_types, ne_exclude_types):
         if ne_exclude_types == None:
-            #ne = textacy.extract.named_entities(self.doc, include_types=ne_include_types, drop_determiners=True, min_freq=1) 
-            #ne = textacy.extract.named_entities(self.doc, exclude_types=u'NUMERIC', drop_determiners=True, min_freq=1) 
-            ne = textacy.extract.named_entities(self.doc, include_types=u'PERSON', drop_determiners=True, min_freq=1) 
+            #ne = textacy.extract.named_entities(self.doc, include_types=ne_include_types, drop_determiners=True, min_freq=1)
+            #ne = textacy.extract.named_entities(self.doc, exclude_types=u'NUMERIC', drop_determiners=True, min_freq=1)
+            ne = textacy.extract.named_entities(self.doc, include_types=u'PERSON', drop_determiners=True, min_freq=1)
         else:
-            ne = textacy.extract.named_entities(self.doc, include_types=ne_include_types, exclude_types=ne_exclude_types, drop_determiners=True, min_freq=1) 
+            ne = textacy.extract.named_entities(self.doc, include_types=ne_include_types, exclude_types=ne_exclude_types, drop_determiners=True, min_freq=1)
 
         len_ne = len(list(ne))
         return ne
@@ -131,7 +134,7 @@ class BcnlpExtractEntity:
     def bnGetPosRegexMatches(self, pattern):
         matches = textacy.extract.pos_regex_matches(self.doc ,pattern)
         return list(matches)
-       
+
     def bnGetCountOfWord(self, word):
         freq_of_word = self.doc.count(word)
         print("Freq of the word {} is {}".format(word, freq_of_word))
@@ -144,22 +147,23 @@ def bnExtractDocSimilarity(doc1, doc2, similarity):
        textacy.similarity.word_movers(doc1, doc2, metric=u'cosine')
     """
 
+    from textacy import similarity
     #if similarity == 'Word Movers':
     if similarity == 'cosine':
         # Metric can be cosine, euclidian, I1, I2, or manhattan
-        s = textacy.similarity.word_movers(doc1, doc2,metric=u'cosine')
+        s = similarity.word_movers(doc1, doc2,metric=u'cosine')
         print(" Cosine Similarity between docs {} and {} is: {}".format( \
                   bnGetDocName(doc1), bnGetDocName(doc2), s))
     elif similarity == 'Euclidian':
-        s = textacy.similarity.word_movers(doc1, doc2,metric=u'euclidian')
+        s = similarity.word_movers(doc1, doc2,metric=u'euclidian')
         print(" Euclidian Similarity between docs {} and {} is: {}".format( \
                   bnGetDocName(doc1), bnGetDocName(doc2), s))
     elif similarity == 'Manhattan':
-        s = textacy.similarity.word_movers(doc1, doc2,metric=u'manhattan')
+        s = similarity.word_movers(doc1, doc2,metric=u'manhattan')
         print(" Manhattan Similarity between docs {} and {} is: {}".format( \
                   bnGetDocName(doc1), bnGetDocName(doc2), s))
     elif similarity == 'word2vec':
-        s = textacy.similarity.word2vec(doc1, doc2)
+        s = similarity.word2vec(doc1, doc2)
         print(" Semantic Similarity between docs {} and {} is: {}".format( \
                   bnGetDocName(doc1), bnGetDocName(doc2), s))
     else:
