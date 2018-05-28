@@ -66,8 +66,8 @@ source activate entspan
 
 ```shell
 conda install spacy  
-conda install textract  
-conda install textacy  
+conda install -c conda-forge textract  
+conda install -c conda-forge textacy  
 conda install psycopg2  
 conda install sqlalchemy  
 conda install -c conda-forge sqlalchemy-utils
@@ -76,8 +76,8 @@ conda install configobj
 
 ### Create and populate the database  
 
-Note: If the DB "bcnlp_db" already exists and you want to start afresh, 
-first delete it. 
+Note: If the DB "bcnlp_db" already exists and you want to start afresh,
+first delete it.
 
 ```shell
 # drop the db named: "bcnlp_db"  
@@ -111,7 +111,7 @@ Store the files to be processed in a directory, say, "indir"
 ### Download the spaCy English language model:
 
 ```shell
-python -m spacy download en 
+python -m spacy download en
 ```
 - Note:  
 
@@ -133,7 +133,7 @@ ex: python bcnlp_main.py --infile indir
 ```shell
 psql -h localhost -U bcnlp bcnlp_db  
 ```
-Note: the password in this case is "bcnlp" 
+Note: the password in this case is "bcnlp"
 
 Some useful commands:  
 ```shell
@@ -141,7 +141,7 @@ To list tables: \dt
 To delete a table: drop table <table_name>  
 To see items in a table: select * from <table_name>  
 ```    
-    
+
 ### Run the curses interface and navigate through the menu:  
 
 ```shell
@@ -156,16 +156,16 @@ You can do the following in this interface:
       table is created in the database.
     - Get the Similarity measure for two documents (Cosine, Euclidian or Manhattan)
 
-### Run createspan to create the entity spans and bar graphs: 
+### Run createspan to create the entity spans and bar graphs:
 ```shell
 python bcnlp_cretespan.py [--bg] --infile <directory>   
 ex: python bcnlp_cretespan.py --infile indir  
     python bcnlp_createspan.py --bg --infile mango_cake.txt   
  ```
-    
+
 - It will create a file <file>.span for each file in indir.  
 - To clear the span, same script is run with --clearspan flag.
-- If --bg flag is specified, it will generate a set of bar graphs in the directory 
+- If --bg flag is specified, it will generate a set of bar graphs in the directory
 bgdir.  
 
 ## Deactivating your conda environment
