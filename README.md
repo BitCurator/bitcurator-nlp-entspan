@@ -161,8 +161,8 @@ You can do the following in this interface:
 
 ### Run createspan to create the entity spans and bar graphs:
 ```shell
-python bcnlp_cretespan.py [--bg] --infile <directory>   
-ex: python bcnlp_cretespan.py --infile indir  
+python bcnlp_createspan.py [--bg] --infile <directory>   
+ex: python bcnlp_createspan.py --infile indir  
     python bcnlp_createspan.py --bg --infile mango_cake.txt   
  ```
 
