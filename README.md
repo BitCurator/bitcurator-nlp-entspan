@@ -19,9 +19,9 @@ To install conda from the command line in Ubuntu, run the following commands (we
 # First install curl
 sudo apt-get install curl
 # Get a specific Anaconda2 release:
-curl -O https://repo.continuum.io/archive/Anaconda2-5.1.0-Linux-x86_64.sh
+curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
 # Run the install script
-bash Anaconda2-5.1.0-Linux-x86_64.sh
+bash Anaconda3-5.2.0-Linux-x86_64.sh
 ```
 
 Type "yes" and hit enter to accept the license, then scroll through the text and hit enter to install into your home directory. Wait for the packages to install, then type "yes" at the next prompt to add the Conda location to your path and hit enter. Type "no" to skip VSTools, and hit enter.
@@ -31,19 +31,35 @@ You can find a helpful overview of common Conda commands on the cheatsheet: http
 Alternatively, you can install Conda from:
 https://www.anaconda.com/download/#linux
 
-### Install postgres
+### Download this repository
+
+```shell
+git clone https://github.com/bitcurator/bitcurator-nlp-entspan
+```
+
+### Install postgres and some dependencies requires for textract
 
 You will need the postgres database to store entity and span data produced by the tool. Run the following commands to install postgres:
 
 ```shell
 sudo apt-get update
-sudo apt-get install postgresql postgresql-contrib
+sudo apt-get install postgresql postgresql-contrib python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig libpulse-dev libasound2-dev
+```
+
+
+### Install textract system-wide using pip (it is not currently packaged for Python 3.6 in conda-forge):
+
+```shell
+pip install textract
 ```
 
 ### Create a new Python virtualenv using Conda and install necessary channels:
+
+In a new terminal (or after typing "source ~/.bashrc"), run the following:
+
 ```shell
-#conda create --name < envname > python=2.7  
-conda create --name entspan python=2.7  
+#conda create [-n|--name] < envname > python=2.7  
+conda create -n entspan python=3.6 anaconda
 ```
 
 Type "y" and hit enter to proceed if prompted.
@@ -54,28 +70,28 @@ conda info --envs
 ```
 - Install conda-forge channel (It has most of the packages we need)  
 ```shell
-conda install --channel conda-forge  python=2.7
+conda install --channel conda-forge  python=3.6
 ```
 
 Type "y" and hit enter to proceed if prompted.
 
-### Activate the Python virtualenv we'll be using:  
+### Activate the Conda environment we'll be using:  
 ```shell
-#source activate < name >  
-source activate entspan  
+#conda activate < name >  
+conda activate entspan  
 ```
 
-### Install the required packages:    
+### Install the required packages with conda and conda-forge:    
 
 ```shell
 conda install spacy  
-conda install -c conda-forge textract  
 conda install -c conda-forge textacy  
 conda install psycopg2  
 conda install sqlalchemy  
 conda install -c conda-forge sqlalchemy-utils
 conda install configobj  
 ```
+
 
 ### Create and populate the database  
 
@@ -107,9 +123,11 @@ psql -h localhost -U bcnlp bcnlp_db
 ```
 To list tables: \dt
 
-- Input directory/file  
+To quit the database console, type Ctrl-D.
 
-Store the files to be processed in a directory, say, "indir"  
+### Input directory/file  
+
+Make a note of where you've stored the files to be processed, For example, "/home/bcadmin/indir". We'll point to this directory in an upcoming step.
 
 ### Download the spaCy English language model:
 
