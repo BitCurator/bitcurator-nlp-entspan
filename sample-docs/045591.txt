@@ -1,0 +1,4 @@
+User-agent: * 
+Disallow: /includes/
+Disallow: /search/
+Disallow: /omb/search/
