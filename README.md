@@ -5,76 +5,69 @@
 [![GitHub issues](https://img.shields.io/github/issues/bitcurator/bitcurator-nlp.svg)](https://github.com/bitcurator/bitcurator-nlp/issues)
 [![GitHub forks](https://img.shields.io/github/forks/bitcurator/bitcurator-nlp.svg)](https://github.com/bitcurator/bitcurator-nlp/network)
 
-Entity extraction and span identification for heterogeneous document types. Build instructions and dependencies can be found below or in setup.txt. This project is in development.
+Entity extraction and span identification for heterogeneous document types. Build instructions and dependencies can be found below. **This project is in development.**
 
 ## Installing and running the entity extraction and analysis tools.
 
-The following instructions are tested to work in Ubuntu 18.04LTS, but should work (with some adaptation) in any linux environment where Postgres and Conda can be installed.
+The following instructions are tested only in Ubuntu 18.04LTS.
 
-### Install Conda
-
-To install conda from the command line in Ubuntu, run the following commands (we'll use Release 5.1.0 as an example here) in a terminal:
-
-```shell
-# First install curl
-sudo apt-get install curl
-# Get a specific Anaconda2 release:
-curl -O https://repo.continuum.io/archive/Anaconda2-5.1.0-Linux-x86_64.sh
-# Run the install script
-bash Anaconda2-5.1.0-Linux-x86_64.sh
-```
-
-Type "yes" and hit enter to accept the license, then scroll through the text and hit enter to install into your home directory. Wait for the packages to install, then type "yes" at the next prompt to add the Conda location to your path and hit enter. Type "no" to skip VSTools, and hit enter.
-
-You can find a helpful overview of common Conda commands on the cheatsheet: https://conda.io/docs/_downloads/conda-cheatsheet.pdf.
-
-Alternatively, you can install Conda from:
-https://www.anaconda.com/download/#linux
-
-### Install postgres
-
-You will need the postgres database to store entity and span data produced by the tool. Run the following commands to install postgres:
+### Make sure the core system is up to date
 
 ```shell
 sudo apt-get update
-sudo apt-get install postgresql postgresql-contrib
+sudo apt-get upgrade
 ```
 
-### Create a new Python virtualenv using Conda and install necessary channels:
+### Install some basic requirements to build in a Python virtualenv:
+
 ```shell
-#conda create --name < envname > python=2.7  
-conda create --name entspan python=2.7  
+sudo apt-get install virtualenv virtualenvwrapper python3-pip python3-dev
 ```
 
-Type "y" and hit enter to proceed if prompted.
+### Install postgres and some textract dependencies
 
-- List the virtual envs created:  
+You will need the postgres database to store entity and span data produced by the tool. Run the following commands to install postgres, along with some dependencies required for the textract package.
+
 ```shell
-conda info --envs  
-```
-- Install conda-forge channel (It has most of the packages we need)  
-```shell
-conda install --channel conda-forge  python=2.7
+sudo apt-get install postgresql postgresql-contrib postgresql-server-dev-10
+sudo apt-get install libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig libpulse-dev libasound2-dev
 ```
 
-Type "y" and hit enter to proceed if prompted.
+### Set up virtualenv and virtualenvwrapper:
 
-### Activate the Python virtualenv we'll be using:  
+You can skip or modify this step (and the remaining virtualenv steps) if your local setup differs or you don't wish to use virtualenvs.
+
 ```shell
-#source activate < name >  
-source activate entspan  
+mkdir ~/.virtualenvs
 ```
 
-### Install the required packages:    
+Add the following to the end of your .bashrc file. You may need to verify the location of virtualenvwrapper on your system:
 
 ```shell
-conda install spacy  
-conda install -c conda-forge textract  
-conda install -c conda-forge textacy  
-conda install psycopg2  
-conda install sqlalchemy  
-conda install -c conda-forge sqlalchemy-utils
-conda install configobj  
+# Virtualenv and virtualenvwrapper
+export WORKON_HOME="$HOME/.virtualenvs"
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+```
+
+Type ```shell source ~/.bashrc``` or close and reopen the terminal.
+
+### Make a virtualenv for the bitcurator-nlp-entspan tools
+
+```shell
+mkvirtualenv -p /usr/bin/python3 entspan
+```
+
+### Install textract, textacy, and some other required pip packages.
+
+Note: Installing textacy via pip will also install the latest release of spaCy.
+
+```shell
+pip install textract
+pip install textacy
+pip install psycopg2-binary
+pip install sqlalchemy
+pip install sqlalchemy-utils
+pip install configobj
 ```
 
 ### Create and populate the database  
