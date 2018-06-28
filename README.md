@@ -93,16 +93,12 @@ GRANT
 postgres=# \q  
 ```
 
-- Login to the db using psql:   
+### (Optional) Logging in to the db with the psql command:   
 ```shell
 psql -h localhost -U bcnlp bcnlp_db  
 (passwd: bcnlp)
 ```
 To list tables: \dt
-
-- Input directory/file  
-
-Store the files to be processed in a directory, say, "indir"  
 
 ### Download the spaCy English language model:
 
@@ -124,7 +120,7 @@ python bcnlp_main.py --infile < inputfile >
 ex: python bcnlp_main.py --infile indir   
 ```    
 
-- Check if the DB is populated  
+Next, check if the DB is populated  
 
 ```shell
 psql -h localhost -U bcnlp bcnlp_db  
@@ -153,6 +149,7 @@ You can do the following in this interface:
     - Get the Similarity measure for two documents (Cosine, Euclidian or Manhattan)
 
 ### Run createspan to create the entity spans and bar graphs:
+
 ```shell
 python bcnlp_cretespan.py [--bg] --infile <directory>   
 ex: python bcnlp_cretespan.py --infile indir  
@@ -164,22 +161,22 @@ ex: python bcnlp_cretespan.py --infile indir
 - If --bg flag is specified, it will generate a set of bar graphs in the directory
 bgdir.  
 
-## Deactivating your conda environment
+## Deactivating the python virtual environment
 
-To deactivate the conda environment you're working in, simply type:
+To deactivate the environment you're working in, simply type:
 
 ```shell
-source deactivate entspan
+deactivate
 ```
 
-You can reactivate your conda environment by running the activate command again from any terminal.
+You can reactivate the virtualenv again by running the activate command again from any terminal.
 
-## Permanently deleting a conda environment
+## Permanently deleting a python virtual environment
 
-To permanently remove the "entspan" conda environment and all dependencies (not including the Postgres database), run the following:
+To permanently remove the "entspan" environment and all dependencies (not including the Postgres database), run the following:
 
 ```shell
-conda remove --name entspan --all
+rmvirtualenv entspan
 ```
 
 ## License(s)
