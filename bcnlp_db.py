@@ -62,8 +62,8 @@ def dbinit():
     con, meta = db_connect('bcnlp', 'bcnlp', 'bcnlp_db')
 
     print("[LOG]: dbinit: Tables created")
-    print "[LOG]:dbinit: con: ", con
-    print "[LOG]:dbinit: meta: ", meta
+    print("[LOG]:dbinit: con: ", con)
+    print("[LOG]:dbinit: meta: ", meta)
 
     # Create the main table if not already created.
     bndbCreateMainTable(con, meta)
@@ -83,7 +83,7 @@ def db_connect(user, password, db, host='localhost',port=5432):
        with some examples.
     '''
 
-    print ">> Conencting to the DB"
+    print(">> Conencting to the DB")
     # We connect with the help of the PostgreSQL URL
     url = 'postgresql://{}:{}@{}:{}/{}'
     url = url.format(user, password, host, port, db)
@@ -142,7 +142,7 @@ def bndbCreateNeTable(table_name, con, meta):
             Column('name', String),
             Column('Term Frequency', Integer)
         )
-        print ">>bndbCreateNEtAble: Creating table ", table_name
+        print(">>bndbCreateNEtAble: Creating table ", table_name)
         meta.create_all(con)
 
 def bndbCreatePosTable(table_name, pos, con, meta):
@@ -157,7 +157,7 @@ def bndbCreatePosTable(table_name, pos, con, meta):
             Column('name', String),
             Column('Term Frequency', Integer)
         )
-        print ">>bndbCreateNEtAble: Creating table ", table_name
+        print(">>bndbCreateNEtAble: Creating table ", table_name)
         meta.create_all(con)
     
 def bndbCreateSimTable(table_name, con, meta):
@@ -175,7 +175,7 @@ def bndbCreateSimTable(table_name, con, meta):
             Column('Euclidian', Float),
             Column('Manhattan', Float)
         )
-        print ">>bndbCreateSimtAble: Creating table ", table_name
+        print(">>bndbCreateSimtAble: Creating table ", table_name)
         meta.create_all(con)
 
 def bndbInsert(table, record, doc_index, con, meta):
@@ -252,9 +252,9 @@ def dbu_drop_table(table_name):
         return(-1, message_string)
 
 def dbu_list_tables(meta):
-    print "The following tables are present in the db "
+    print("The following tables are present in the db ")
     for table in meta.tables:
-        print table
+        print(table)
 
 def dbu_execute_dbcmd(function, **kwargs):
     """ DB utility function to execute the command specified by 'function'

@@ -137,7 +137,7 @@ if __name__ == "__main__":
     con, meta = bcnlp_db.dbinit()
     bnPrintMainTable(con, meta)
     doc_index = bnGetDocIndexForDoc(con, meta, "13030.Smalltalk.Hugh+Brinkman.txt")
-    print "DOC Index : ", doc_index
+    print("DOC Index : %s"), doc_index
 
     # Compare tables
     bcnlp_db.dbu_execute_dbcmd('compare_two_tables', table1='bcnlp_entity_doc0', table2='bcnlp_entity_doc1')
