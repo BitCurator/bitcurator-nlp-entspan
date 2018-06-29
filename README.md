@@ -57,6 +57,14 @@ Type ```shell source ~/.bashrc``` or close and reopen the terminal.
 mkvirtualenv -p /usr/bin/python3 entspan
 ```
 
+### Install a textacy dependency requiring gcc-5:
+The cld2-cffi package - see https://github.com/chartbeat-labs/textacy/issues/5 - must be built with gcc-5 for the time being. Revisit in future. (Do not use sudo in the second step when installing via pip in a virtualenv; if you do, the cld2-cffi dep will remain broken as it won't be found in the venv, and textacy will try to build it again with gcc-6).
+
+```shell
+sudo apt-get install gcc-5 g++-5 libffi-dev
+env CC=/usr/bin/gcc-5 pip3 install -U cld2-cffi
+```
+
 ### Install textract, textacy, and some other required pip packages.
 
 Note: Installing textacy via pip will also install the latest release of spaCy.
