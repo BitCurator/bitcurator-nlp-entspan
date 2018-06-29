@@ -7,7 +7,7 @@
 
 Entity extraction and span identification for heterogeneous document types. Build instructions and dependencies can be found below. **This project is in development.**
 
-## Installing and running the entity extraction and analysis tools.
+## Installing and running the entity extraction and analysis tools
 
 The following instructions are tested only in Ubuntu 18.04LTS.
 
