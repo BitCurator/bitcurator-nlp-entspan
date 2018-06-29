@@ -45,8 +45,7 @@ class ExtractFileContents:
             input_file_contents = f.read()
             '''
             #input_file_contents = textacy.fileio.read.read_file(infile, mode=u'rt', encoding=None)
-            input_file_contents = textacy.io.read_text(new_infile, mode=u'rt', lines=False,
-                                                       encoding=None).next()
+            input_file_contents = textacy.io.read_text(new_infile, mode=u'rt', lines=False, encoding=None).next()
             #input_file_contents = textract.process(infile)
 
         else:
