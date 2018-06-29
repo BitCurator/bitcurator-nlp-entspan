@@ -72,7 +72,7 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
 
     #### bag of terms
     bot = ec[doc_index].bnGetBagOfTerms(is_sorted=False, ngrams=2)
-    print("Bag Of Terms with ngrams 2: %s %s"), list(bot)[:10], len(list(bot))
+    print("Bag Of Terms with ngrams 2: ", list(bot)[:10], len(list(bot)))
 
 
     #### Named Entities Identification
@@ -104,7 +104,7 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
 
     ##### Now create a new table of entities for this document and populate.
     table_name = 'bcnlp_entity_doc' + str(doc_index) 
-    print("Creating bcnlp_entity_x table: %s"), table_name
+    print("Creating bcnlp_entity_x table: ", table_name)
     bndbCreateNeTable(table_name, con, meta)
     
     #### Insert the Named Entities into the table
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     con, meta = dbinit()
     i = 0
     if args.infile: 
-        print("\n Infile: %s"), args.infile
+        print("\n Infile: ", args.infile)
         infile = os.getcwd() + '/' + args.infile
         if os.path.isdir(infile):
             print("{} is a directory".format(infile))
@@ -189,14 +189,14 @@ if __name__ == "__main__":
                 print("file number {}: {}".format(i, f))
                 #f_path = os.getcwd() + '/' + infile + '/' + f
                 f_path = infile + '/' + f
-                print("Processing file %s"), f_path
+                print("Processing file ", f_path)
                 bcnlpProcessFile(i, f_path, con, meta)
                 i += 1
         else:
             bcnlpProcessFile(0, infile, con, meta)
          
     num_docs = i
-    print("NUM DOCS: %s"), num_docs
+    print("NUM DOCS: ", num_docs)
 
     # Now for each doc, create a similarity matrix table in the following structure:
     # if num_docs = 3, for example:
@@ -241,7 +241,7 @@ if __name__ == "__main__":
             table_name = 'doc'+str(i)+'_sm_table'
             # get the spacy doc for doc#i j
             if (i != j) and sim_matrix[i,j] == "0":
-                print("Calculating similarity for i,j %s %s"), i, j
+                print("Calculating similarity for i,j ", i, j)
                 doc_path, spacy_doc = bnGetSpacyDocFromIndex(j)
                 doc_name = os.path.basename(doc_path)
                 #print("Doc name for index {} is {}".format(j, doc_name))
