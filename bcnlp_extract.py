@@ -30,7 +30,7 @@ class ExtractFileContents:
             print("Filename: {}, ext: {}".format(filename, file_ext))
 
             new_infile = replace_suffix(infile,file_ext, 'txt')
-            print("new_infile: %s"), new_infile
+            print("new_infile: ", new_infile)
             textract_cmd = 'textract ' + infile + ' > ' + new_infile
             ## print "CMD: ", textract_cmd
 
@@ -54,7 +54,7 @@ class ExtractFileContents:
             f = codecs.open(infile, "r", "utf-8")
             input_file_contents = f.read()
             '''
-            print("Extracting Contents of file %s"), infile
+            print("Extracting Contents of file ", infile)
             input_file_contents = textacy.io.read_text(infile, mode=u'rt', lines=False,
                                                        encoding=None).next()
 
