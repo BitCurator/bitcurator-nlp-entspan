@@ -70,12 +70,7 @@ env CC=/usr/bin/gcc-5 pip3 install -U cld2-cffi
 Note: Installing textacy via pip will also install the latest release of spaCy.
 
 ```shell
-pip install textract
-pip install textacy
-pip install psycopg2-binary
-pip install sqlalchemy
-pip install sqlalchemy-utils
-pip install configobj
+pip install textract textacy psycopg2-binary sqlalchemy sqlalchemy-utils configobj
 ```
 
 ### Create and populate the database  
@@ -88,7 +83,7 @@ first delete it.
 sudo -u postgres dropdb bcnlp_db
 ```
 
-To create a db with a user and password:
+To create a db with a user and password (commands are shown in the postgres prompt):
 
 ```shell
 sudo -u postgres psql  
@@ -113,7 +108,6 @@ To list tables: \dt
 ```shell
 python -m spacy download en
 ```
-- Note:  
 
 If the language model is not downloaded properly, you will see the following Spacy error:  
 "Warning: no model found for 'en' Only loading the 'en' tokenizer."
