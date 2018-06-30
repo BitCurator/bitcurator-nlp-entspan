@@ -30,7 +30,7 @@ You will need the postgres database to store entity and span data produced by th
 
 ```shell
 sudo apt-get install postgresql postgresql-contrib postgresql-server-dev-10
-sudo apt-get install libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig libpulse-dev libasound2-dev
+sudo apt-get install libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr flac ffmpeg lame libffi-dev libmad0 libsox-fmt-mp3 sox libjpeg-dev swig libpulse-dev libasound2-dev
 ```
 
 ### Set up virtualenv and virtualenvwrapper:
@@ -55,14 +55,6 @@ Type ```shell source ~/.bashrc``` or close and reopen the terminal.
 
 ```shell
 mkvirtualenv -p /usr/bin/python3 entspan
-```
-
-### Install a textacy dependency requiring gcc-5:
-The cld2-cffi package - see https://github.com/chartbeat-labs/textacy/issues/5 - must be built with gcc-5 for the time being. Revisit in future. (Do not use sudo in the second step when installing via pip in a virtualenv; if you do, the cld2-cffi dep will remain broken as it won't be found in the venv, and textacy will try to build it again with gcc-6).
-
-```shell
-sudo apt-get install gcc-5 g++-5 libffi-dev
-env CC=/usr/bin/gcc-5 pip3 install -U cld2-cffi
 ```
 
 ### Install textract, textacy, and some other required pip packages.
