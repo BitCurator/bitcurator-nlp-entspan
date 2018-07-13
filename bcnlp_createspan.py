@@ -27,7 +27,8 @@ import shutil
 try:
     from argparse import ArgumentParser
 except ImportError:
-    raise ImportError("This script requires ArgumentParser which is in Python 2.7 or Python 3.0")
+    raise(ImportError("This script requires ArgumentParser which is\
+            in Python 2.7 or Python 3.0"))
 import logging
 # Set up logging location
 logging.basicConfig(filename='span.log', level=logging.DEBUG)
@@ -86,13 +87,13 @@ class ParseForEnts():
     def __init__(self):
         self.spans = []
     def tagEnts(self, text, entity_list):
-        self.spacy_doc = nlp(text)
+        self.spacy_doc = nlp(str(text))
         logging.debug("SPACY_DOC Entities: \n")
         '''
         for ent in self.spacy_doc.ents:
             logging.debug("%s, %s, %s", ent, ent.label, ent.label_)
         '''
-        print "Entity_list: ", entity_list
+        print("Entity_list: ", entity_list)
         for i in entity_list:
             dict_ent[i] = 0
 
@@ -157,7 +158,7 @@ class ParseForEnts():
             print("Filename: {}, ext: {}".format(filename, file_ext))
     
             new_infile = replace_suffix(infile,file_ext, 'txt')
-            print "new_infile: ", new_infile
+            print("new_infile: ", new_infile)
     
             f = codecs.open(new_infile, "r", "utf-8")
             input_file_contents = f.read()
@@ -171,15 +172,16 @@ class ParseForEnts():
                 return None
     
             #nlp expects a unicode text string. 
-            input_file_contents = unicode(text,'utf-8')
+            #input_file_contents = unicode(text,'utf-8')
+            input_file_contents = text
     
         else:
-            print "Extracting Contents of file", infile
+            print("Extracting Contents of file", infile)
             f = codecs.open(infile, "r", "utf-8")
             try:
                 input_file_contents = f.read()
             except:
-                print "Error reading file ", infile
+                print("Error reading file ", infile)
                 return None
 
         return input_file_contents
@@ -205,7 +207,7 @@ class ParseForEnts():
         """
         for f in os.listdir(infile):
             f_path = infile + '/' + f
-            print "\n>> Processing file ", f_path
+            print("\n>> Processing file ", f_path)
             logging.debug("bcnlpProcessDir: Processing file %s ",f_path)
             if os.path.isdir(f_path):
                 self.bcnlpProcessDir(f_path, bg)
@@ -241,32 +243,32 @@ class ParseForEnts():
         if not os.path.exists(outfile):
             logging.debug('writing spans to outfile %s ', outfile)
             with open(outfile, "w") as of:
-                text_line = ("const text = '"+ text + "'")
+                text_line = ("const text = '"+ str(text) + "'")
                 try:
-                    of.write(text_line.encode('utf8'))
+                    of.write(text_line)
                 except UnicodeEncodeError as e:
-                    print "Unicode Error({0}) ".format(e)
-                    print (" ### Error in writing: ", infile)
+                    print("Unicode Error({0}) ".format(e))
+                    print(" ### Error in writing: ", infile)
                     return
                 span_line = str(spans).replace('(','{')
                 span_line = span_line.replace(')','}')
-                span_line = unicode("const spans = "+ span_line, 'utf-8') 
+                span_line = "const spans = "+ span_line 
                 of.write("%s\n" % span_line)
-                ent_line = unicode("const ents = " + str(entity_list), 'utf-8')
+                ent_line = "const ents = " + str(entity_list)
                 of.write("%s\n" % ent_line)
         else:
             print("Outfile {} exists. So skipping".format(outfile))
     
         print("\n")
-        print ">> Wrote span info to output file ", outfile
+        print(">> Wrote span info to output file ", outfile)
 
         if bg == True:
             infile_dir = os.path.dirname(infile)
             bgpath = os.path.join(infile_dir, "bgdir")
-            print ">> Generating Graphs in the directory ", bgpath
+            print(">> Generating Graphs in the directory ", bgpath)
 
             if os.path.exists(bgpath):
-                print ">> Recreating the directory ", bgpath
+                print(">> Recreating the directory ", bgpath)
                 shutil.rmtree(bgpath)
 
             os.makedirs(bgpath)
@@ -364,7 +366,7 @@ def bn_generate_bar_graph(dict_ent, filename, bgpath, title, max_items):
     try:
         ax.set_xticklabels(group_labels)
     except:
-        print ">> Possibly Unicode error for entity ", filename
+        print(">> Possibly Unicode error for entity ", filename)
         return
     fig.autofmt_xdate()
 
@@ -373,7 +375,7 @@ def bn_generate_bar_graph(dict_ent, filename, bgpath, title, max_items):
     base_name, file_ext = os.path.splitext(basename)
     out_file = bgpath + '/' + base_name + 'bg.pdf'
     canvas.print_figure(out_file)
-    print ">> Graph is in file ", out_file
+    print(">> Graph is in file ", out_file)
 
     #os.system("evince " + out_file)
 
@@ -425,16 +427,16 @@ if __name__ == "__main__":
     if infile == None: 
         print("\n>> Please specify input file or directory.")
         print(">> Usage: python bcnlp_createspan.py --infile <input text file> ")
-        raise SystemExit, -1
+        raise(SystemExit, -1)
 
 
     span = ParseForEnts()
     if args.cleanspan == True:
-        print "Cleanspan Flag: ", args.cleanspan
+        print("Cleanspan Flag: ", args.cleanspan)
         if os.path.isdir(infile):
             span.bnCleanSpanFiles(infile)
-        print "Cleaning done"
-        raise SystemExit, 0
+        print("Cleaning done")
+        raise(SystemExit, 0)
 
     nlp = spacy.load('en')
     if os.path.isdir(infile):
@@ -447,7 +449,7 @@ if __name__ == "__main__":
         if os.path.exists(outfile):
             print("\n>> Outfile {} exists. Remove it before running the script".\
                   format(outfile)) 
-            raise SystemExit, -1
-        print "Processing bcnlpProcessSingleFile \n"
+            raise(SystemExit, -1)
+        print("Processing bcnlpProcessSingleFile \n")
         span.bcnlpProcessSingleFile(infile, args.bg)
         
