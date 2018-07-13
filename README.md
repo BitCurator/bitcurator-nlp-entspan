@@ -71,7 +71,7 @@ env CC=/usr/bin/gcc-5 pip3 install -U cld2-cffi
 Note: Installing textacy via pip will also install the latest release of spaCy.
 
 ```shell
-pip install textract textacy psycopg2-binary sqlalchemy sqlalchemy-utils configobj
+pip install textract textacy psycopg2-binary sqlalchemy sqlalchemy-utils configobj matplotlib
 ```
 
 ### Create and populate the database  
