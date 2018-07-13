@@ -26,7 +26,8 @@ global num_docs
 try:
     from argparse import ArgumentParser
 except ImportError:
-    raise ImportError("This script requires ArgumentParser which is in Python 2.7 or Python 3.0")
+    raise ImportError("This script requires ArgumentParser which \
+            is in Python 2.7 or Python 3.0")
 
 def bcnlpInsertToPosTable(table_name, ec, pos_type_list, con, meta):
     """ Looking at the words in pos_type_list (list of nouns, or prepositions
@@ -37,7 +38,8 @@ def bcnlpInsertToPosTable(table_name, ec, pos_type_list, con, meta):
         ip += 1
         # num of pos type 
         tf_pos = ec.bnGetCount(pos_word)
-        record_list = {'Index':ip, 'name':str(pos_word), 'Term Frequency':tf_pos}
+        record_list = {'Index':ip, 'name':str(pos_word), \
+                'Term Frequency':tf_pos}
         bndbInsert2(table_name, record_list, ip, con, meta)
 
 def bcnlpMakePosTable(table_name, pos_list, ec, con, meta):
@@ -46,7 +48,8 @@ def bcnlpMakePosTable(table_name, pos_list, ec, con, meta):
     # First create the table if it doesn't exist.
     print("\n\n>> Creating Table {} for NOUN POS ".format(table_name))
     bndbCreatePosTable(table_name, pos_list, con, meta)
-    print("TABLE {} created.  Now inserting records to POS table".format(table_name))
+    print("TABLE {} created.  Now inserting records to POS table".\
+            format(table_name))
 
     # Now insert records
     bcnlpInsertToPosTable(table_name, ec, pos_list, con, meta)
@@ -64,7 +67,8 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
 
     #### Bag of words
     bow = ec[doc_index].bnGetBagOfWords()
-    ## print("list bag of words:[len={}] : {} ".format(len(list(bow)), list(bow)[:10]))
+    ## print("list bag of words:[len={}] : {} ".format(len(list(bow)), \
+            #list(bow)[:10]))
 
     '''
     bot, bot_count = ec.bnGetBagOfTerms(is_sorted=True)
@@ -72,11 +76,13 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
 
     #### bag of terms
     bot = ec[doc_index].bnGetBagOfTerms(is_sorted=False, ngrams=2)
-    print("Bag Of Terms with ngrams 2: ", list(bot)[:10], len(list(bot)))
+    if bot:
+        print("Bag Of Terms with ngrams 2: ", list(bot)[:10], len(list(bot)))
 
 
     #### Named Entities Identification
-    ne = ec[doc_index].bnIdentifyNamedEntities(ne_include_types=None, ne_exclude_types=u'NUMERIC')
+    ne = ec[doc_index].bnIdentifyNamedEntities(ne_include_types=None,\
+            ne_exclude_types=u'NUMERIC')
 
     ##### POS Regex matches #####
     noun_pattern = textacy.constants.POS_REGEX_PATTERNS['en']['NP']
@@ -108,7 +114,8 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
     bndbCreateNeTable(table_name, con, meta)
     
     #### Insert the Named Entities into the table
-    ne = ec[doc_index].bnIdentifyNamedEntities(ne_include_types=None, ne_exclude_types=u'NUMERIC')
+    ne = ec[doc_index].bnIdentifyNamedEntities(ne_include_types=None, \
+            ne_exclude_types=u'NUMERIC')
     bow = ec[doc_index].bnGetBagOfWords()
 
     # For each word in the doc, insert a record into the docx_table with
@@ -122,7 +129,8 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
                 ## print("NAME: {}, TFW: {}".format(w, tfw))
 
             record_list = {'Index':i, 'name':w, 'Term Frequency':tfw}
-            ## print("[LOG-2]:Inserting ne: {} into table {}".format(record_list, tfw))
+            ##print("[LOG-2]:Inserting ne: {} into table {}".\
+                    #format(record_list, tfw))
             bndbInsert(table_name, record_list, i, con, meta)
             
         except:
@@ -130,11 +138,11 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
             ## print "exception for ", w
             continue
 
-    # for each word in each of pos_np, vp and pp, create records in their respective
-    # tables. For each doc, there will be one such table. As an alternative,
-    # we can have one table for all documents with doc_index as paret of the record.
-    # That way we will have just 3 tables irrespective of num docs. FIXME: See if
-    # it is a better idea.
+    # for each word in each of pos_np, vp and pp, create records in their 
+    # respective tables. For each doc, there will be one such table. 
+    # As an alternative, we can have one table for all documents with 
+    # doc_index as paret of the record. That way we will have just 3 
+    # tables irrespective of num docs. FIXME: See if it is a better idea.
 
     table_name = 'bcnlp_noun_doc'+str(doc_index)
     bcnlpMakePosTable(table_name, pos_match_np, ec[doc_index], con, meta)
@@ -190,15 +198,17 @@ if __name__ == "__main__":
                 #f_path = os.getcwd() + '/' + infile + '/' + f
                 f_path = infile + '/' + f
                 print("Processing file ", f_path)
-                bcnlpProcessFile(i, f_path, con, meta)
-                i += 1
+                if (os.stat(f_path).st_size != 0):
+                    bcnlpProcessFile(i, f_path, con, meta)
+                    i += 1
         else:
             bcnlpProcessFile(0, infile, con, meta)
          
     num_docs = i
     print("NUM DOCS: ", num_docs)
 
-    # Now for each doc, create a similarity matrix table in the following structure:
+    # Now for each doc, create a similarity matrix table in the following 
+    # structure:
     # if num_docs = 3, for example:
     # doc0_sm_table:
     #                      doc1    doc2   doc3
@@ -212,10 +222,11 @@ if __name__ == "__main__":
     # doc3              x_s3                x_c3         x_e3
 
     # First create a similarity table for each doc
-    # Also we will maintain a matrix and mark with a 1 if the martix is calculated
-    # for two documents. We will also mark the other position of the matrix
-    # for the two documents, so we won't calculate the similarity number
-    # for the same two documents twice. (doc0 and doc1, doc1 and doc0)
+    # Also we will maintain a matrix and mark with a 1 if the martix is 
+    # calculated for two documents. We will also mark the other position 
+    # of the matrix for the two documents, so we won't calculate the 
+    # similarity number for the same two documents twice. 
+    # (doc0 and doc1, doc1 and doc0)
 
     simmatrix_str = ""
     for i in range (0, num_docs):
@@ -223,7 +234,8 @@ if __name__ == "__main__":
         table_name = 'doc'+str(i)+'_sm_table'
         bndbCreateSimTable(table_name, con, meta)
 
-    sim_matrix = np.array(list(simmatrix_str * num_docs)).reshape(num_docs, num_docs)
+    sim_matrix = np.array(list(simmatrix_str * num_docs)).reshape(num_docs, \
+            num_docs)
     print(sim_matrix)
 
     # Now populate each table
@@ -245,10 +257,14 @@ if __name__ == "__main__":
                 doc_path, spacy_doc = bnGetSpacyDocFromIndex(j)
                 doc_name = os.path.basename(doc_path)
                 #print("Doc name for index {} is {}".format(j, doc_name))
-                sem_sim = bnExtractDocSimilarity(myspacy_doc, spacy_doc, 'word2vec')
-                cos_sim = bnExtractDocSimilarity(myspacy_doc, spacy_doc, 'cosine')
-                euc_sim = bnExtractDocSimilarity(myspacy_doc, spacy_doc, 'Eiclidian')
-                manh_sim = bnExtractDocSimilarity(myspacy_doc, spacy_doc, 'Manhattan')
+                sem_sim = bnExtractDocSimilarity(myspacy_doc, \
+                        spacy_doc, 'word2vec')
+                cos_sim = bnExtractDocSimilarity(myspacy_doc, \
+                        spacy_doc, 'cosine')
+                euc_sim = bnExtractDocSimilarity(myspacy_doc, \
+                        spacy_doc, 'Eiclidian')
+                manh_sim = bnExtractDocSimilarity(myspacy_doc, \
+                        spacy_doc, 'Manhattan')
                 sim_table_list = {'Index':j, 'Name':doc_name, \
                      'Semantic':sem_sim,  'Cosine':cos_sim, \
                      'Euclidian':euc_sim, 'Manhattan':manh_sim}
@@ -257,14 +273,16 @@ if __name__ == "__main__":
                 sim_table_list_2 = {'Index':i, 'Name':doc_name, \
                      'Semantic':sem_sim,  'Cosine':cos_sim, \
                      'Euclidian':euc_sim, 'Manhattan':manh_sim}
-                print("[LOG]Inserting to table {} record {}", table_name, sim_table_list)
-                # Now insert the record into the table for doc-i
+                print("[LOG]Inserting to table {} record {}", table_name, \
+                                      sim_table_list)
+                # Now insert the record into the table for doc-ir
                 bndbInsert(table_name, sim_table_list, i, con, meta)
                 bndbInsert(table_name_2, sim_table_list_2, j, con, meta)
                 sim_matrix[i,j] = "1"
 
-                # Since the flag for i,j is the same as j,i, we will set both. This
-                # will avoid building the similarity for the same tables once again.
+                # Since the flag for i,j is the same as j,i, we will set both.
+                # This will avoid building the similarity for the same 
+                # tables once again.
                 sim_matrix[j,i] = "1"
 
                 print(sim_matrix)
