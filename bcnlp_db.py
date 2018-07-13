@@ -294,7 +294,8 @@ def dbu_execute_dbcmd(function, **kwargs):
             #tablename = table+str(i)
             new_table_name += str(doc_index)
     elif (function in "get_num_records"):
-        for k,v in kwargs.iteritems():
+        #for k,v in kwargs.iteritems():
+        for k,v in kwargs.items():
             #print "k-%s = v-%s" % (k, v)
             if k == 'table': table = v
         #psql_cmd = 'select count(*) '+ table
