@@ -17,7 +17,12 @@ import os
 import codecs
 import textract
 import subprocess
+import logging
+
 from bcnlp_query import *
+
+# Set up logging location
+logging.basicConfig(filename='bcnlp_ent.log', level=logging.DEBUG)
 
 class ExtractFileContents:
     """ Using Textacy APIs, this defines methods to extract contents of a file.
@@ -55,14 +60,20 @@ class ExtractFileContents:
                     mode='rt', lines=False, encoding=None))
             #input_file_contents = textract.process(infile)
 
+            # now remove the .txt file created.
+            os.remove(new_infile)
+
         else:
             '''
             f = codecs.open(infile, "r", "utf-8")
             input_file_contents = f.read()
             '''
             print("Extracting Contents of file ", infile)
-            input_file_contents = next(textacy.io.text.read_text(infile, \
+            try:
+                input_file_contents = next(textacy.io.text.read_text(infile, \
                     mode='rt', encoding=None, lines=False))
+            except:
+                return -1
 
         return input_file_contents
 
@@ -91,13 +102,23 @@ class BcnlpExtractEntity:
             self.invalid_file = True
         if (os.stat(infile).st_size != 0):
             input_file_contents = efc.extractContents(infile)
-            metadata = {'filename': infile}
-            self.doc = textacy.Doc(input_file_contents, metadata=metadata)
+            if input_file_contents == -1:
+                print(">> Error in extractContents")
+                self.invalid_file = True
+            else:
+                metadata = {'filename': infile}
+                try:
+                    self.doc = \
+                        textacy.Doc(input_file_contents, metadata=metadata)
+                except:
+                    print("Textacy Error")
+                    self.invalid_file = True
 
     def bnSaveFileInfo(self, filename, file_index):
-        if (os.stat(filename).st_size != 0):
-            print("Adding filename:{} and file_index: {}".\
-                                  format(filename, file_index))
+        #if (os.stat(filename).st_size != 0):
+        if not self.invalid_file:
+            logging.debug("Adding filename:%s and file_index: %s",
+                                  filename, file_index)
             #fileDictList[file_index].append({file_array[0]:filename, \
                     #file_array[1]:self.doc})
             fileDictList.append({file_array[0]:filename, \
@@ -222,7 +243,10 @@ def bnGetDocNameFromIndex(doc_index):
     doc_name = ""
     Found = False
     while not Found:
-        doc_name = fileDictList[i]['filename']
+        try:
+            doc_name = fileDictList[i]['filename']
+        except:
+            return None
         if i==doc_index:
             return doc_name
         i += 1
@@ -253,8 +277,12 @@ def bnGetSpacyDocFromIndex(doc_index):
     while not Found:
         if doc_index == i:
             logging.debug('Found spacy_doc for doc: %s ', str(doc_index))
-            spacy_doc = fileDictList[i]['spacy_doc']
-            filename = fileDictList[i]['filename']
+            try:
+                spacy_doc = fileDictList[i]['spacy_doc']
+                filename = fileDictList[i]['filename']
+            except:
+                print("bnGetSpacyDocFromIndex:Possible Indexing error")
+                logging.debug("bnGetSpacyDocFromIndex:Possible Indexing error")
             Found = True
         else:
             i+=1
