@@ -18,6 +18,7 @@ import codecs
 import textract
 import subprocess
 import numpy as np
+import logging
 
 from bcnlp_extract import *
 from bcnlp_db import *
@@ -28,6 +29,9 @@ try:
 except ImportError:
     raise ImportError("This script requires ArgumentParser which \
             is in Python 2.7 or Python 3.0")
+
+# Set up logging location
+logging.basicConfig(filename='bcnlp_ent.log', level=logging.DEBUG)
 
 def bcnlpInsertToPosTable(table_name, ec, pos_type_list, con, meta):
     """ Looking at the words in pos_type_list (list of nouns, or prepositions
@@ -92,12 +96,18 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
     pos_match_np=ec[doc_index].bnGetPosRegexMatches(noun_pattern)
     pos_match_pp=ec[doc_index].bnGetPosRegexMatches(prep_pattern)
     pos_match_vp=ec[doc_index].bnGetPosRegexMatches(verb_pattern)
-    num_pos_np = len(list(pos_match_np))
-    num_pos_pp = len(list(pos_match_pp))
-    num_pos_vp = len(list(pos_match_vp))
+
+    num_pos_np = num_pos_pp = num_pos_vp = num_words = 0
+    if pos_match_np:
+        num_pos_np = len(list(pos_match_np))
+    if pos_match_pp:
+        num_pos_pp = len(list(pos_match_pp))
+    if pos_match_vp:
+        num_pos_vp = len(list(pos_match_vp))
 
     n_grams = ec[doc_index].bnGetNGrams(1)
-    num_words = len(list(n_grams))
+    if n_grams:
+        num_words = len(list(n_grams))
     ## print "Length of words list: ", len(list(n_grams))
 
     doc_name =os.path.basename(infile)
@@ -117,6 +127,9 @@ def bcnlpProcessFile(doc_index, infile, con, meta):
     ne = ec[doc_index].bnIdentifyNamedEntities(ne_include_types=None, \
             ne_exclude_types=u'NUMERIC')
     bow = ec[doc_index].bnGetBagOfWords()
+    if not bow:
+        print(">> ProcessFile returning as bow is null")
+        return(-1)
 
     # For each word in the doc, insert a record into the docx_table with
     # term frequency
@@ -187,25 +200,26 @@ if __name__ == "__main__":
     con, meta = dbinit()
     i = 0
     if args.infile: 
-        print("\n Infile: ", args.infile)
+        print("\n ENT: Infile: ", args.infile)
         infile = os.getcwd() + '/' + args.infile
         if os.path.isdir(infile):
-            print("{} is a directory".format(infile))
+            print("ENT: {} is a directory".format(infile))
             # FIXME: Traverse through the directory tree and read in every file.
             # For now assume there is only one level
             for f in os.listdir(infile):
-                print("file number {}: {}".format(i, f))
+                logging.debug("ENT: file number {}: {}".format(i, f))
                 #f_path = os.getcwd() + '/' + infile + '/' + f
                 f_path = infile + '/' + f
                 print("Processing file ", f_path)
                 if (os.stat(f_path).st_size != 0):
-                    bcnlpProcessFile(i, f_path, con, meta)
+                    if bcnlpProcessFile(i, f_path, con, meta) == -1:
+                        print(">> Processing of file {} failed".format(f_path))
                     i += 1
         else:
             bcnlpProcessFile(0, infile, con, meta)
          
     num_docs = i
-    print("NUM DOCS: ", num_docs)
+    print(">> Number of Docs: ", num_docs)
 
     # Now for each doc, create a similarity matrix table in the following 
     # structure:
@@ -242,10 +256,9 @@ if __name__ == "__main__":
     for i in range (0, num_docs):
         # First get the spacy-doc and name of the document we are building the
         # similarity table for
-        mydoc_name = bnGetDocNameFromIndex(i)
-        print("LOG: Getting spacy_doc for doc {}: {} ".format(i,mydoc_name))
+        ##mydoc_name = bnGetDocNameFromIndex(i)
         mydoc_name, myspacy_doc = bnGetSpacyDocFromIndex(i)
-        print("mydoc_name: {}".format(mydoc_name))
+        logging.debug("Getting spacy_doc for doc %s: %s ", i, mydoc_name)
 
         # Now traverse through the documents and build a record for similarity
         # measures for 'mydoc' with each of the other documents present.
@@ -253,10 +266,14 @@ if __name__ == "__main__":
             table_name = 'doc'+str(i)+'_sm_table'
             # get the spacy doc for doc#i j
             if (i != j) and sim_matrix[i,j] == "0":
-                print("Calculating similarity for i,j ", i, j)
-                doc_path, spacy_doc = bnGetSpacyDocFromIndex(j)
+                print(">> Calculating similarity for i,j ", i, j)
+                try:
+                    doc_path, spacy_doc = bnGetSpacyDocFromIndex(j)
+                except:
+                    print(">> GetSpacyDocFromIndex failed")
+                    continue
                 doc_name = os.path.basename(doc_path)
-                #print("Doc name for index {} is {}".format(j, doc_name))
+                logging.debug("Doc name for index %s is %s",j, doc_name)
                 sem_sim = bnExtractDocSimilarity(myspacy_doc, \
                         spacy_doc, 'word2vec')
                 cos_sim = bnExtractDocSimilarity(myspacy_doc, \
@@ -273,8 +290,8 @@ if __name__ == "__main__":
                 sim_table_list_2 = {'Index':i, 'Name':doc_name, \
                      'Semantic':sem_sim,  'Cosine':cos_sim, \
                      'Euclidian':euc_sim, 'Manhattan':manh_sim}
-                print("[LOG]Inserting to table {} record {}", table_name, \
-                                      sim_table_list)
+                logging.debug("[LOG]Inserting to table %s record %s", 
+                        table_name, sim_table_list)
                 # Now insert the record into the table for doc-ir
                 bndbInsert(table_name, sim_table_list, i, con, meta)
                 bndbInsert(table_name_2, sim_table_list_2, j, con, meta)
@@ -285,4 +302,4 @@ if __name__ == "__main__":
                 # tables once again.
                 sim_matrix[j,i] = "1"
 
-                print(sim_matrix)
+                logging.debug("sim_matrix: %s", sim_matrix)
