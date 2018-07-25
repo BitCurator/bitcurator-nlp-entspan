@@ -17,6 +17,7 @@ from sqlalchemy import *
 import psycopg2
 from sqlalchemy_utils import database_exists, create_database
 import sys
+import logging
 
 #from sqlalchemy.ext.declarative import declarative_base
 #metadata = MetaData()
@@ -29,7 +30,10 @@ import sys
 db_index = dict()
 db_list = []
 dbinfo_array = ["db_name", "con", "meta"]
-#global con, meta
+
+# Set up logging location
+logging.basicConfig(filename='bcnlp_ent.log', level=logging.DEBUG)
+
 def dbinit():
     global con, meta
     #engine = sqlalchemy.create_engine("postgres://postgres@/postgres")
@@ -61,9 +65,10 @@ def dbinit():
     """
     con, meta = db_connect('bcnlp', 'bcnlp', 'bcnlp_db')
 
-    print("[LOG]: dbinit: Tables created")
-    print("[LOG]:dbinit: con: ", con)
-    print("[LOG]:dbinit: meta: ", meta)
+    print("dbinit: Tables created")
+    logging.debug("dbinit: Tables created")
+    logging.debug("dbinit: con: ", con)
+    logging.debug("dbinit: meta: ", meta)
 
     # Create the main table if not already created.
     bndbCreateMainTable(con, meta)
@@ -75,7 +80,8 @@ def dbinit():
     return con, meta
 
 def bndbAddToDbList(db_name, con, meta):
-    db_list.append({dbinfo_array[0]:db_name, dbinfo_array[1]:con, dbinfo_array[2]:meta})
+    db_list.append({dbinfo_array[0]:db_name, \
+            dbinfo_array[1]:con, dbinfo_array[2]:meta})
 
 def db_connect(user, password, db, host='localhost',port=5432):
     '''Returns a connection and a metadata object
