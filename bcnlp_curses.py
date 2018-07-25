@@ -21,7 +21,7 @@ import logging
 from bcnlp_extract import *
 
 # Set up logging location
-logging.basicConfig(filename='/tmp/bcnlp.log', level=logging.DEBUG)
+logging.basicConfig(filename='bcnlp_ent.log', level=logging.DEBUG)
 
 class Menu(object):                                                          
 
@@ -93,6 +93,7 @@ def report_func():
     y =5
     x=5
     for record in table:
+        logging.debug("Writing about doc %s", i)
         i += 1
         rec_string = 'Document# ' + str(record[0]) + ', ' + str(record[1]) + ' has '+ str(record[2]) + ' words, '+ \
                  str(record[3])+' nouns, '+ str(record[4])+' verbs '+str(record[5])+' prepositions '
@@ -110,6 +111,7 @@ def report_func():
     pad.refresh(0,0, 5,5, 20,75)
 
     num_documents = i
+    logging.debug("Num docs: %d", num_documents)
     ## curses.putp("LOG: Num docs: "+ str(num_documents))
     
 def get_entity_list():
@@ -174,6 +176,9 @@ def get_similarity(sim_type):
     # Now get the particular record
     sim_record = bcnlp_query.bnGetInfoForDoc(doc_index1, 'sim', con, meta)
     logging.debug('similarity record: %s ', sim_record)
+
+    if sim_record == None:
+        return
 
     # Now extract the cosine similarity value for doc_index2 from this record.
     if sim_type == "semantic":
@@ -318,7 +323,7 @@ class MyApp(object):
         con, meta = bcnlp_db.dbinit()
 
         submenu_entity_items = [                                                    
-                ('Get Enitity List', get_entity_list),                                       
+                ('Get Entity List', get_entity_list),
                 ('Display Documents', report_func)
                 ]                                                            
         
