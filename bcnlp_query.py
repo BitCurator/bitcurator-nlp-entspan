@@ -20,7 +20,7 @@ import sys
 import bcnlp_db
 import logging
 # Set up logging location
-logging.basicConfig(filename='/tmp/bcnlp.log', level=logging.DEBUG)
+logging.basicConfig(filename='bcnlp_ent.log', level=logging.DEBUG)
 
 try:
     from argparse import ArgumentParser
