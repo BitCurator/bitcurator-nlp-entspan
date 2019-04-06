@@ -2,10 +2,12 @@
 
 # bitcurator-nlp-entspan
 
-[![GitHub issues](https://img.shields.io/github/issues/bitcurator/bitcurator-nlp.svg)](https://github.com/bitcurator/bitcurator-nlp/issues)
-[![GitHub forks](https://img.shields.io/github/forks/bitcurator/bitcurator-nlp.svg)](https://github.com/bitcurator/bitcurator-nlp/network)
+[![GitHub issues](https://img.shields.io/github/issues/bitcurator/bitcurator-nlp-entspan.svg)](https://github.com/bitcurator/bitcurator-nlp-entspan/issues)
+[![GitHub forks](https://img.shields.io/github/forks/bitcurator/bitcurator-nlp-entspan.svg)](https://github.com/bitcurator/bitcurator-nlp-entspan/network)
+[![Build Status](https://travis-ci.org/BitCurator/bitcurator-nlp-entspan.svg?branch=master)](https://travis-ci.org/BitCurator/bitcurator-nlp-entspan)
+[![Twitter Follow](https://img.shields.io/twitter/follow/bitcurator.svg?style=social&label=Follow)](https://twitter.com/bitcurator)
 
-Entity extraction and span identification for heterogeneous document types. Build instructions and dependencies can be found below. **This project is in development.**
+Entity extraction and span identification for heterogeneous document types. Build instructions and dependencies can be found below.
 
 ## Installing and running the entity extraction and analysis tools
 
