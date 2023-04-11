@@ -4,8 +4,13 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/bitcurator/bitcurator-nlp-entspan.svg)](https://github.com/bitcurator/bitcurator-nlp-entspan/issues)
 [![GitHub forks](https://img.shields.io/github/forks/bitcurator/bitcurator-nlp-entspan.svg)](https://github.com/bitcurator/bitcurator-nlp-entspan/network)
-[![Build Status](https://travis-ci.org/BitCurator/bitcurator-nlp-entspan.svg?branch=master)](https://travis-ci.org/BitCurator/bitcurator-nlp-entspan)
 [![Twitter Follow](https://img.shields.io/twitter/follow/bitcurator.svg?style=social&label=Follow)](https://twitter.com/bitcurator)
+
+# END-OF-LIFE (EOL) NOTICE 
+
+This research software has reached end-of-life. The code in this repository is no longer actively maintained or supported.
+
+## About
 
 Entity extraction and span identification for heterogeneous document types. Build instructions and dependencies can be found below.
 
